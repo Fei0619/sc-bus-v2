@@ -1,0 +1,14 @@
+server:
+  port: 9010
+spring:
+  application:
+    name: BUS-INSTANCE
+eureka:
+  client:
+    service-url:
+      # 与eureka交互的地址
+      defaultZone: http://admin:123456@127.0.0.1:10001/eureka/
+    # 表示是否将自己注册到【eureka server】
+    register-with-eureka: true
+    # 表示是否从【eureka server】获取注册信息
+    fetch-registry: true

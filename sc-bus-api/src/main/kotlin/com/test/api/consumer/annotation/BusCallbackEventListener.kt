@@ -1,4 +1,4 @@
-package com.test.api.annotation
+package com.test.api.consumer.annotation
 
 /**
  * @author 费世程
@@ -7,4 +7,4 @@ package com.test.api.annotation
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class BusFallbackEventListener(val topic: String)
+annotation class BusCallbackEventListener(val topic: String)

@@ -1,0 +1,11 @@
+server:
+  port: 9011
+spring:
+  application:
+    name: BUS-SERVER
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:123456@127.0.0.1:10001/eureka/
+    register-with-eureka: true
+    fetch-registry: true

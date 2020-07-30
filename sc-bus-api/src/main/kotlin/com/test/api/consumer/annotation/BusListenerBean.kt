@@ -1,4 +1,4 @@
-package com.test.api.annotation
+package com.test.api.consumer.annotation
 
 /**
  * @author 费世程

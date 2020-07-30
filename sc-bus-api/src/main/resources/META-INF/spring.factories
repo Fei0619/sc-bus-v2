@@ -1,0 +1,10 @@
+# 【@SpringBootApplication】注解包含两个【@ComponentScan】和【@EnableAutoConfiguration】两个注解
+#  1）【@ComponentScan】注解的作用是扫描@SpringBootApplication所在的Application类所在的包及其子包下的
+#     所有@Component注解（或拓展了@component的注解）标记的bean，并注册到spring容器中。
+#  2）spring.factories文件是帮助spring-boot项目包以外的bean（即在pom文件中添加依赖中的bean）注册到spring-boot项目的spring容器。
+#     由于@ComponentScan注解只能扫描spring-boot项目包内的bean并注册到spring容器中，因此需要@EnableAutoConfiguration注解来注册项目包外的bean。
+#     而spring.factories文件，则是用来记录项目包外需要注册的bean类名
+#
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.test.api.conf.BusApiInitializer,\
+com.test.api.conf.BusApiBeanConfig

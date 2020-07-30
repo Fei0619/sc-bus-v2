@@ -11,14 +11,35 @@
   <modules>
     <module>sc-bus-server</module>
     <module>sc-bus-api</module>
+    <module>instance</module>
+    <module>sc-share-common</module>
   </modules>
 
   <properties>
-    <reactor-bom.version>RELEASE</reactor-bom.version>
+    <sc-share-common.version>1.0-SNAPSHOT</sc-share-common.version>
+
     <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
-    <spring-cloud.version>Hoxton.RC2</spring-cloud.version>
+    <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
+    <spring-webflux.version>5.2.1.RELEASE</spring-webflux.version>
+    <jackson.version>2.10.3</jackson.version>
+
+    <kotlin.version>1.3.72</kotlin.version>
+    <junit.version>4.12</junit.version>
+    <reactor-bom.version>RELEASE</reactor-bom.version>
+    <jakarta.validation-api>2.0.2</jakarta.validation-api>
   </properties>
 
+  <!--
+  1）scope:作用域
+    test:测试范围有效
+    compile:编译范围有效，在编译和打包时都会将依赖存储进去
+    provided:在编译个测试的过程有效，最后生成war包时不会加入
+    runtime:在运行的时候依赖，编译的时候不依赖
+    import:它只使用在dependencyManagement中，我们知道maven和java只能单继承，作用是管理依赖包的版本，一般用来保持当前项目的所有依赖版本统一
+    scope=import：实现多继承
+
+  2）type:定义引入jar包的方式
+  -->
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -35,11 +56,15 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
         <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
