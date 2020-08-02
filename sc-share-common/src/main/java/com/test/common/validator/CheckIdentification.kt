@@ -1,5 +1,6 @@
 package com.test.common.validator
 
+import com.test.common.validator.constraint.IdentificationValidateConstraint
 import javax.validation.Constraint
 
 /**

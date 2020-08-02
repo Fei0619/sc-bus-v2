@@ -1,8 +1,7 @@
-package cn.sh.ideal.nj.share.common.json
+package com.test.common.json
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
-import com.test.common.json.JsonUtils
 
 
 fun <T> T.toJsonString(ignoreNull: Boolean = true, pretty: Boolean = false) =

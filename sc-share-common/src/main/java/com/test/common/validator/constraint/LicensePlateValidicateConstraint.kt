@@ -1,5 +1,6 @@
-package com.test.common.validator
+package com.test.common.validator.constraint
 
+import com.test.common.validator.CheckLicensePlate
 import java.util.regex.Pattern
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext

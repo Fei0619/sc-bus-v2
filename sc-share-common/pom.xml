@@ -18,6 +18,26 @@
       <version>${jakarta.validation-api}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webflux</artifactId>
+      <version>${spring-webflux.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- reactor-core -->
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- reactor-netty -->
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
