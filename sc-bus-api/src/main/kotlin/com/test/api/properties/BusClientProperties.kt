@@ -1,5 +1,6 @@
 package com.test.api.properties
 
+import com.test.common.constant.PushType
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 
@@ -14,34 +15,40 @@ class BusClientProperties {
   /**
    * 是否自动订阅
    */
-  private var autoRegister: Boolean? = false
+  var autoRegister: Boolean = false
   /**
-   * bus服务code
+   * bus服务在注册中心的名字
    */
-  private var busServiceCode: String? = null
+  var busServiceCode: String = "BUS-SERVER"
+  /**
+   * 服务id
+   */
+  var serviceId: String = ""
   /**
    * 服务名
+   * <p>服务在注册中心的名字，不设置会自动读取spring.application.name配置</p>
    */
-  private var serviceCode: String? = null
+  var serviceCode: String? = null
   /**
    * 服务描述
    */
-  private var serviceDesc: String? = null
+  var serviceDesc: String? = null
   /**
    * 推送地址
    */
-  private var receiveUrl: String? = null
+  var receiveUrl: String? = null
   /**
    * 回调地址
    */
-  private var callbackUrl: String? = null
+  var callbackUrl: String? = null
   /**
    * 推送类型
+   *
    */
-  private var pushType: String? = null
+  var pushType: PushType = PushType.LoadBalance
   /**
    * 订阅信息
    */
-  private var subscribes: List<SubscribeProperties>? = null
+  var subscribes: List<SubscribeProperties> = ArrayList()
 
 }

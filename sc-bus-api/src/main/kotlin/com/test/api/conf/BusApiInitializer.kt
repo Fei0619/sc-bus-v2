@@ -1,5 +1,6 @@
 package com.test.api.conf
 
+import com.test.api.consumer.subscribe.WebClientSubscribeClient
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.stereotype.Component
 
@@ -8,10 +9,10 @@ import org.springframework.stereotype.Component
  * @date 2020/7/30 10:46
  */
 @Component
-class BusApiInitializer : InitializingBean {
+class BusApiInitializer(private val subscribeClient: WebClientSubscribeClient) : InitializingBean {
 
   override fun afterPropertiesSet() {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    subscribeClient.autoSubscribe()
   }
 
 }

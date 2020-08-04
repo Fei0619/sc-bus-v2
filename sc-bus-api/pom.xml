@@ -17,6 +17,11 @@
       <artifactId>sc-share-common</artifactId>
       <version>${sc-share-common.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.test</groupId>
+      <artifactId>sc-bus-common</artifactId>
+      <version>${sc-bus-common.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>

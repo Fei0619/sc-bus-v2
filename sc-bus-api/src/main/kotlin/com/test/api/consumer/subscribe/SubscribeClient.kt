@@ -6,6 +6,6 @@ package com.test.api.consumer.subscribe
  */
 interface SubscribeClient {
 
-  fun subscribe()
+  fun autoSubscribe()
 
 }

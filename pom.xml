@@ -11,12 +11,14 @@
   <modules>
     <module>sc-bus-server</module>
     <module>sc-bus-api</module>
-    <module>instance</module>
+    <module>sc-bus-instance</module>
     <module>sc-share-common</module>
+    <module>sc-bus-common</module>
   </modules>
 
   <properties>
     <sc-share-common.version>1.0-SNAPSHOT</sc-share-common.version>
+    <sc-bus-common.version>1.0-SNAPSHOT</sc-bus-common.version>
 
     <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
     <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
