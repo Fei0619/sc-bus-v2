@@ -6,4 +6,25 @@ package com.test.server.mongo.document
  */
 class Subscription {
 
+  /**
+   * 主题
+   */
+  var topic: String? = null
+  /**
+   * 订阅条件
+   */
+  var condition: String = ""
+  /**
+   * 是否广播
+   */
+  var broadcast: Boolean = false
+  /**
+   * 订阅描述
+   */
+  var description: String = ""
+  /**
+   * 是否生效
+   */
+  var active: Boolean = false
+
 }
