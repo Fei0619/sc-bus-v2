@@ -8,6 +8,7 @@ import com.test.api.consumer.deliver.CallbackDeliver
 import com.test.api.consumer.deliver.EventDeliver
 import com.test.api.consumer.deliver.context.CallbackEventContext
 import com.test.api.consumer.deliver.context.EventListenerContext
+import com.test.common.result.Res
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.support.AbstractApplicationContext
@@ -19,10 +20,10 @@ import org.springframework.util.StringUtils
  * @date 2020/7/27 16:55
  */
 @Component
-class EventDeliverImpl(private val applicationContext: AbstractApplicationContext)
+class DeliverImpl(private val applicationContext: AbstractApplicationContext)
   : EventDeliver, CallbackDeliver, InitializingBean {
 
-  private val logger = LoggerFactory.getLogger(EventDeliverImpl::class.java)
+  private val logger = LoggerFactory.getLogger(DeliverImpl::class.java)
 
   companion object {
     private val eventHandlerMapping = HashMap<String, EventListenerContext>()
@@ -33,6 +34,49 @@ class EventDeliverImpl(private val applicationContext: AbstractApplicationContex
     init()
   }
 
+  override fun deliverEvent(topic: String, eventMessage: String): Res<Any> {
+    val handler = eventHandlerMapping[topic]
+    if (handler == null) {
+      logger.debug("没有处理此事件的程序 -> topic=${topic}")
+    }
+    val javaType = handler!!.javaType
+    val message: Any
+    try {
+      message = JsonUtils.parseJson(eventMessage, javaType)
+    } catch (e: Exception) {
+      logger.warn("EventMessage解析出现异常：topic=$topic,eventMessage=$eventMessage -> ${e.message}")
+      return Res.error("EventMessage解析出现异常：${e.message}")
+    }
+    return try {
+      val data = handler.process(message)
+      Res.data(data)
+    } catch (e: Exception) {
+      Res.error("执行出现异常：${e.message}")
+    }
+  }
+
+  override fun deliverCallback(topic: String, callbackMessage: String): Res<Any> {
+    val handler = callbackHandlerMapping[topic]
+    if (handler == null) {
+      logger.debug("没有处理此回调的程序 -> topic=${topic}")
+    }
+    val javaType = handler!!.javaType
+    val message: Any
+    try {
+      message = JsonUtils.parseJson(callbackMessage, javaType)
+    } catch (e: Exception) {
+      logger.warn("CallbackMessage解析出现异常：topic=$topic,callbackMessage=$callbackMessage -> ${e.message}")
+      return Res.error("CallbackMessage解析出现异常：${e.message}")
+    }
+    return try {
+      val data = handler.process(message)
+      Res.data(data)
+    } catch (e: Exception) {
+      Res.error("执行出现异常：${e.message}")
+    }
+  }
+
+  //---------------------------------------------- 私有方法 -----------------------------------------------//
   /**
    * 初始化：
    * 读取项目中被【BusEventListener】、【BusCallbackEventListener】注解注释的方法信息
@@ -101,9 +145,5 @@ class EventDeliverImpl(private val applicationContext: AbstractApplicationContex
     }
   }
 
-  override fun deliver(topic: String, message: Any): Any {
-
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
 
 }

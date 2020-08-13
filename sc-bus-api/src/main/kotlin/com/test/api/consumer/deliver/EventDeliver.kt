@@ -1,5 +1,7 @@
 package com.test.api.consumer.deliver
 
+import com.test.common.result.Res
+
 
 /**
  * @author 费世程
@@ -7,6 +9,6 @@ package com.test.api.consumer.deliver
  */
 interface EventDeliver {
 
-  fun deliver(topic: String, message: Any): Any
+  fun deliverEvent(topic: String, eventMessage: String): Res<Any>
 
 }
