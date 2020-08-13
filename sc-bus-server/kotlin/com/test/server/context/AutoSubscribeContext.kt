@@ -45,7 +45,7 @@ class AutoSubscribeContext {
     /**
      * 服务码冲突
      */
-    serviceCodeConfilct;
+    serviceCodeConflict;
   }
 
 }

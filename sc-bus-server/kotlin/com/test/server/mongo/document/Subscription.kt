@@ -1,5 +1,7 @@
 package com.test.server.mongo.document
 
+import org.springframework.data.annotation.Id
+
 /**
  * @author 费世程
  * @date 2020/8/2 18:00
@@ -9,6 +11,7 @@ class Subscription {
   /**
    * 主题
    */
+  @Id
   var topic: String? = null
   /**
    * 订阅条件

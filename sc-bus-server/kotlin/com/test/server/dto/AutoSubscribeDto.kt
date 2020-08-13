@@ -1,7 +1,5 @@
 package com.test.server.dto
 
-import com.test.common.constant.PushType
-
 /**
  * @author 费世程
  * @date 2020/8/2 17:46
@@ -33,7 +31,7 @@ class AutoSubscribeDto {
    * 推送类型
    *
    */
-  var pushType: PushType? = null
+  var pushType: String? = null
 
   /**
    * 订阅信息
