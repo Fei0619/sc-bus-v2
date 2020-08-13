@@ -12,3 +12,20 @@ eureka:
     register-with-eureka: true
     # 表示是否从【eureka server】获取注册信息
     fetch-registry: true
+
+bus:
+  client:
+    autoRegister: true
+    busServiceCode: BUS-SERVER
+    serviceId: ca5d868123534c668e5c894b0583bf21
+    serviceDesc: 'bus-server'
+    receiveUrl: ''
+    callbackUrl: ''
+    pushType: LoadBalance
+    subscribes:
+      - topic: ''
+        condition: ''
+        broadcast: false
+        active: true
+        subscribeDesc: ''
+

@@ -26,7 +26,7 @@ class ServiceDetails {
   /**
    * 服务描述
    */
-  var serviceDesc: String? = ""
+  var serviceDesc: String = ""
   /**
    * 接收推送的地址
    */

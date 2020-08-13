@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.UUID;
+
 
 /**
  * 在单元测试的时候报：java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration
@@ -25,13 +27,19 @@ public class Test {
   private Driver driver;
 
   @org.junit.Test
-  public void method() {
+  public void testConfiguration() {
     /**
      * 在TestConfiguration配置类中
      * 当使用【@Component】时 -> 返回false
      * 当使用【@Configuration】时 -> 返回true
      */
     System.err.println(car == driver.getCar());
+  }
+
+  @org.junit.Test
+  public void generateUUID() {
+    String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+    System.out.println("uuid=" + uuid);
   }
 
 }

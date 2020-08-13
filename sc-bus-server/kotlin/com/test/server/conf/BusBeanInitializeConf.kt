@@ -13,12 +13,23 @@ import java.util.concurrent.*
  * @date 2020/8/12 19:50
  */
 @Configuration
-open class BusBeanInitializeConf {
+open class BusBeanInitializeConf(private val busClientProperties: BusClientProperties) {
+
+  @Bean
+  open fun webClient(): WebClient {
+    return WebClients.createWebClient(
+        busClientProperties.webClientConnectTimeout.toMillis().toInt(),
+        busClientProperties.webClientReadTimeout.toMillis(),
+        busClientProperties.webClientWriteTimeout.toMillis())
+  }
 
   @Bean
   @LoadBalanced
   open fun loadBalancedWebClient(): WebClient.Builder {
-    return WebClients.createWebClientBuilder()
+    return WebClients.createWebClientBuilder(
+        busClientProperties.webClientConnectTimeout.toMillis().toInt(),
+        busClientProperties.webClientReadTimeout.toMillis(),
+        busClientProperties.webClientWriteTimeout.toMillis())
   }
 
   /**
