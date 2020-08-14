@@ -13,18 +13,18 @@ class EventPushInfo(eventMessage: EventMessage<Any>, subscriptionDetails: Subscr
   /**
    * 实际推送类型
    */
-  val pushType: PushType = subscriptionDetails.pushType
+  var pushType: PushType = subscriptionDetails.pushType
   /**
    * 实际推送地址
    */
-  val receiverUrl = subscriptionDetails.receiveUrl
+  var receiverUrl = subscriptionDetails.receiveUrl
   /**
    * 延迟时间
    */
-  val delayMillis: Long? = null
+  var delayMillis: Long = -1L
   /**
    * 推送次数
    */
-  val pushCount: Int = 0
+  var pushCount: Int = 0
 
 }

@@ -20,11 +20,15 @@ class MessageReceiverImpl(@Qualifier("idempotentMessageFilter") private val mess
   : MessageReceiver {
 
   override fun receiveMessages(messages: Flux<EventMessage<Any>>): Mono<Res<PublishResult>> {
-    //过滤
+    //1.过滤
     var filterMessages = messages
     for (messageFilter in messageFilters) {
       filterMessages = messageFilter.doFilter(filterMessages)
     }
+    //2.计算推送路径
+    val pushInfos = messageRouter.router(messages)
+    //3.推送
+
 
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }

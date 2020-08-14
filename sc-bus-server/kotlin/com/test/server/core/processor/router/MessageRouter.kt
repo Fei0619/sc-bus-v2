@@ -10,5 +10,5 @@ import reactor.core.publisher.Mono
  * @date 2020/8/13 20:21
  */
 interface MessageRouter {
-  fun router(messages: Flux<EventMessage<Any>>): Mono<EventPushInfo>
+  fun router(messages: Flux<EventMessage<Any>>): Flux<EventPushInfo>
 }

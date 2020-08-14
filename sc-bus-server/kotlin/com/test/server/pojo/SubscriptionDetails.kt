@@ -1,6 +1,8 @@
 package com.test.server.pojo
 
 import com.test.common.constant.PushType
+import com.test.common.json.JsonUtils
+import org.springframework.util.StringUtils
 
 /**
  * @author 费世程
@@ -56,5 +58,40 @@ class SubscriptionDetails {
    * 是否广播
    */
   var broadcast = false
+
+  @Transient
+  @org.springframework.data.annotation.Transient
+  private var conditionsGroup: List<Set<String>>? = null
+
+  @java.beans.Transient
+  fun getConditionsGroup(): List<Set<String>>? {
+    if (conditionsGroup == null) {
+      synchronized(this) {
+        conditionsGroup = if (StringUtils.isEmpty(condition)) {
+          emptyList()
+        } else {
+          val list: MutableList<Set<String>> = ArrayList()
+
+          val split = condition.split("|")
+          for (it in split) {
+            val con = it.split("&")
+            val group = con.toSet()
+            list.add(group)
+          }
+          list
+        }
+      }
+    }
+    return conditionsGroup
+  }
+
+}
+
+fun main() {
+  val condition = "tenantId=12&companyId=10301|userId=9001"
+  val sub = SubscriptionDetails()
+  sub.condition = condition
+  val conditionsGroup = sub.getConditionsGroup()
+  System.err.println(JsonUtils.toJsonString(conditionsGroup))
 
 }

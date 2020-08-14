@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import reactor.core.publisher.Mono
-import reactor.core.publisher.toMono
 
 /**
  * @author 费世程
@@ -152,7 +151,7 @@ class SubscribeService(private val serviceDetailsRepository: ServiceDetailsRepos
     val newDetails = ServiceDetails().apply {
       this.serviceId = dto.serviceId
       this.serviceCode = dto.serviceCode!!
-      this.serviceDesc = dto.serviceDesc
+      this.serviceDesc = dto.serviceDesc ?: ""
       this.receiveUrl = dto.receiveUrl!!
       this.callbackUrl = dto.callbackUrl!!
       try {
@@ -197,9 +196,9 @@ class SubscribeService(private val serviceDetailsRepository: ServiceDetailsRepos
     return context
   }
 
-  private fun refreshNodeSubscriptions() {
+  private fun refreshNodeSubscriptions(): Mono<Boolean> {
     log.debug("订阅变更，通知其他节点刷新订阅信息...")
-    cacheService.refreshNodeCache()
+    return cacheService.refreshNodeCache()
   }
 
 }
