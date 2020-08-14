@@ -20,6 +20,6 @@ interface Publisher {
   /**
    * 发布回调
    */
-  fun pushCallback(callbackPushInfos: Flux<CallbackPushInfo>): Mono<Unit>
+  fun pushCallback(callbackPushInfo: CallbackPushInfo): Mono<Unit>
 
 }

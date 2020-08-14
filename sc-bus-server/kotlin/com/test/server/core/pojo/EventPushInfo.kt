@@ -22,7 +22,7 @@ class EventPushInfo(val eventMessage: EventMessage<Any>,
   /**
    * 延迟时间
    */
-  var delayMillis: Long = -1L
+  var delayMillis: Long = eventMessage.delayMillis
   /**
    * 推送次数
    */
