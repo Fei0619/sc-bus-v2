@@ -1,7 +1,8 @@
 package com.test.server.core.processor.publisher
 
+import com.test.server.core.pojo.CallbackPushInfo
 import com.test.server.core.pojo.EventPushInfo
-import com.test.server.core.pojo.PublisherRecord
+import com.test.server.core.pojo.PublishRecord
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -14,6 +15,11 @@ interface Publisher {
   /**
    * 发布事件
    */
-  fun publisherEvent(messages: Flux<EventPushInfo>): Mono<PublisherRecord>
+  fun publisherEvent(eventPushInfos: Flux<EventPushInfo>): Flux<PublishRecord>
+
+  /**
+   * 发布回调
+   */
+  fun pushCallback(callbackPushInfos: Flux<CallbackPushInfo>): Mono<Unit>
 
 }

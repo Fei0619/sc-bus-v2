@@ -5,6 +5,12 @@ import com.test.common.http.WebClients
 import com.test.server.core.processor.filter.IdempotentMessageFilter
 import com.test.server.core.processor.filter.LocalIdempotentMessageFilter
 import com.test.server.core.processor.filter.MessageFilter
+import com.test.server.core.processor.publisher.AsyncPublisher
+import com.test.server.core.processor.publisher.Publisher
+import com.test.server.core.storage.RoutingStorage
+import com.test.server.mongo.MongoStorage
+import com.test.server.mongo.repository.MogoRoutingLogRepository
+import com.test.server.service.CacheService
 import org.springframework.cloud.client.loadbalancer.LoadBalanced
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -68,6 +74,17 @@ open class BusBeanInitializeConf(private val busClientProperties: BusClientPrope
   @Bean("idempotentMessageFilter")
   open fun messageFilters(idempotentMessageFilter: IdempotentMessageFilter): List<MessageFilter> {
     return listOf(idempotentMessageFilter)
+  }
+
+  @Bean
+  open fun asyncPublisher(cacheService: CacheService,
+                          executorService: ExecutorService): Publisher {
+    return AsyncPublisher(cacheService, executorService)
+  }
+
+  @Bean
+  open fun routingStorage(routingLogRepository: MogoRoutingLogRepository): RoutingStorage {
+    return MongoStorage(routingLogRepository)
   }
 
 }

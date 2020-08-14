@@ -8,7 +8,8 @@ import com.test.server.pojo.SubscriptionDetails
  * @author 费世程
  * @date 2020/8/13 20:15
  */
-class EventPushInfo(eventMessage: EventMessage<Any>, subscriptionDetails: SubscriptionDetails) {
+class EventPushInfo(val eventMessage: EventMessage<Any>,
+                    val subscriptionDetails: SubscriptionDetails) {
 
   /**
    * 实际推送类型

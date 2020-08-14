@@ -27,7 +27,7 @@ class WebClientEventPublisher(private val uri: String,
     return doPublish(uri, messages)
   }
 
-  fun <T> doPublish(url: String, message: T): Res<PublishResult> {
+  private fun <T> doPublish(url: String, message: T): Res<PublishResult> {
     val requestUrl = uri + url
     val resStr = webClientBuilder
         .baseUrl(requestUrl)
