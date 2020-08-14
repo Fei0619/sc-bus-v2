@@ -2,6 +2,9 @@ package com.test.server.conf
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import com.test.common.http.WebClients
+import com.test.server.core.processor.filter.IdempotentMessageFilter
+import com.test.server.core.processor.filter.LocalIdempotentMessageFilter
+import com.test.server.core.processor.filter.MessageFilter
 import org.springframework.cloud.client.loadbalancer.LoadBalanced
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -55,6 +58,16 @@ open class BusBeanInitializeConf(private val busClientProperties: BusClientPrope
         ThreadPoolExecutor.CallerRunsPolicy() //拒绝任务策略：由向线程池提交任务的线程执行
     )
 //    return Executors.newCachedThreadPool()
+  }
+
+  @Bean
+  open fun idempotentMessageFilter(): IdempotentMessageFilter {
+    return LocalIdempotentMessageFilter(busClientProperties)
+  }
+
+  @Bean("idempotentMessageFilter")
+  open fun messageFilters(idempotentMessageFilter: IdempotentMessageFilter): List<MessageFilter> {
+    return listOf(idempotentMessageFilter)
   }
 
 }
