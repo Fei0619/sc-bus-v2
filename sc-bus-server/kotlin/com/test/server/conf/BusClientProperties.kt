@@ -28,5 +28,9 @@ class BusClientProperties {
    * 幂等过期时间 - 单位:秒
    */
   var idempotentExpireTime = 60L
+  /**
+   * 默认的失败重试次数
+   */
+  var retryLimit = 2
 
 }

@@ -1,10 +1,13 @@
 package com.test.common.message;
 
 
+import lombok.Data;
+
 /**
  * @author 费世程
  * @date 2020/8/14 13:51
  */
+@Data
 public class CallbackMessage<T> {
   /**
    * 事件id

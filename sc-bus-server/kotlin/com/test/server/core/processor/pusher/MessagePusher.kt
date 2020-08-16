@@ -29,8 +29,8 @@ interface MessagePusher {
 
   }
 
-  fun pushEvent(event: EventPushInfo): Mono<Unit>
+  fun pushEvent(eventPushInfo: EventPushInfo): Mono<Unit>
 
-  fun pushCallback(callbackEvent: CallbackPushInfo): Mono<Unit>
+  fun pushCallback(callbackPushInfo: CallbackPushInfo): Mono<Unit>
 
 }

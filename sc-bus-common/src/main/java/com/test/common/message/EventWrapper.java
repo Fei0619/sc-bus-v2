@@ -13,7 +13,7 @@ public class EventWrapper {
   @NotNull
   private String eventMessage;
 
-  EventWrapper(@NotNull String topic, @NotNull String eventMessage) {
+  public EventWrapper(@NotNull String topic, @NotNull String eventMessage) {
     this.topic = topic;
     this.eventMessage = eventMessage;
   }

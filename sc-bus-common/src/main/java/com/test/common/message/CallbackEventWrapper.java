@@ -13,7 +13,7 @@ public class CallbackEventWrapper {
   @NotNull
   private String callbackMessage;
 
-  CallbackEventWrapper(@NotNull String topic, @NotNull String callbackMessage) {
+  public CallbackEventWrapper(@NotNull String topic, @NotNull String callbackMessage) {
     this.topic = topic;
     this.callbackMessage = callbackMessage;
   }

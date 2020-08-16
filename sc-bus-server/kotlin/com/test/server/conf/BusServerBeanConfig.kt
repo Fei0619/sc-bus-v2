@@ -7,6 +7,7 @@ import com.test.server.core.processor.filter.LocalIdempotentMessageFilter
 import com.test.server.core.processor.filter.MessageFilter
 import com.test.server.core.processor.publisher.AsyncPublisher
 import com.test.server.core.processor.publisher.Publisher
+import com.test.server.core.storage.EventPushLogStorage
 import com.test.server.core.storage.RoutingStorage
 import com.test.server.mongo.MongoStorage
 import com.test.server.mongo.repository.MogoRoutingLogRepository
@@ -22,7 +23,7 @@ import java.util.concurrent.*
  * @date 2020/8/12 19:50
  */
 @Configuration
-open class BusBeanInitializeConf(private val busClientProperties: BusClientProperties) {
+open class BusServerBeanConfig(private val busClientProperties: BusClientProperties) {
 
   @Bean
   open fun webClient(): WebClient {
@@ -34,7 +35,7 @@ open class BusBeanInitializeConf(private val busClientProperties: BusClientPrope
 
   @Bean
   @LoadBalanced
-  open fun loadBalancedWebClient(): WebClient.Builder {
+  open fun loadBalancedWebClientBuilder(): WebClient.Builder {
     return WebClients.createWebClientBuilder(
         busClientProperties.webClientConnectTimeout.toMillis().toInt(),
         busClientProperties.webClientReadTimeout.toMillis(),
@@ -83,8 +84,18 @@ open class BusBeanInitializeConf(private val busClientProperties: BusClientPrope
   }
 
   @Bean
-  open fun routingStorage(routingLogRepository: MogoRoutingLogRepository): RoutingStorage {
+  open fun mongoStorage(routingLogRepository: MogoRoutingLogRepository): MongoStorage {
     return MongoStorage(routingLogRepository)
+  }
+
+  @Bean
+  open fun routingStorage(mongoStorage: MongoStorage): RoutingStorage {
+    return mongoStorage
+  }
+
+  @Bean
+  open fun eventPushLogStorage(mongoStorage: MongoStorage): EventPushLogStorage {
+    return mongoStorage
   }
 
 }
