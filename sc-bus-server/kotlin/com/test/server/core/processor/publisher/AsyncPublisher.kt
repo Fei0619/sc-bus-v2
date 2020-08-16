@@ -6,6 +6,7 @@ import com.test.common.json.toJsonString
 import com.test.server.core.pojo.CallbackPushInfo
 import com.test.server.core.pojo.EventPushInfo
 import com.test.server.core.pojo.PublishRecord
+import com.test.server.core.processor.pusher.MessagePusher
 import com.test.server.service.BusCache
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -80,30 +81,149 @@ class AsyncPublisher(private val busCache: BusCache,
    */
   private fun createEventConsumeThread(serviceCode: String) {
     val thread = Thread {
-
+      val queue = eventQueueMapping[serviceCode]
+      if (queue != null) {
+        queue.poll(2, TimeUnit.SECONDS)?.let { pushInfo ->
+          val subDetails = pushInfo.subscriptionDetails
+          val limit = subDetails.limit
+          val pushType = subDetails.pushType
+          if (limit < 1) {
+            //服务端不限流
+            reactiveExecutor.execute {
+              MessagePusher.getMessagePusher(pushType).pushEvent(pushInfo)
+            }
+          } else {
+            val currentNodeLimit = (limit / busCache.getNodeCount()).coerceAtLeast(1)
+            val current = serverLimits.computeIfAbsent(serviceCode) { AtomicInteger(0) }
+            if (currentNodeLimit >= current.decrementAndGet()) {
+              reactiveExecutor.execute {
+                MessagePusher.getMessagePusher(pushType).pushEvent(pushInfo).subscribe { current.decrementAndGet() }
+              }
+            } else {
+              MessagePusher.getMessagePusher(pushType).pushEvent(pushInfo)
+              current.decrementAndGet()
+            }
+          }
+        }
+      } else {
+        log.debug("eventQueueMapping.get($serviceCode) return null...")
+        TimeUnit.SECONDS.sleep(1)
+      }
     }
     thread.start()
+    threads.add(thread)
   }
 
   /**
    * 创建Event延迟事件消费线程
    */
   private fun createDelayEventConsumeThread(serviceCode: String) {
-
+    val thread = Thread {
+      val queue = eventDelayQueueMapping[serviceCode]
+      if (queue != null) {
+        queue.poll(2, TimeUnit.SECONDS)?.let { delayEvent ->
+          val event = delayEvent.info
+          val subDetails = event.subscriptionDetails
+          val limit = subDetails.limit
+          val pushType = subDetails.pushType
+          if (limit < 1) {
+            reactiveExecutor.execute {
+              MessagePusher.getMessagePusher(pushType).pushEvent(event)
+            }
+          } else {
+            val currentNodeLimit = (limit / busCache.getNodeCount()).coerceAtLeast(1)
+            val current = serverLimits.computeIfAbsent(serviceCode) { AtomicInteger(0) }
+            if (current.incrementAndGet() <= currentNodeLimit) {
+              //不限流
+              reactiveExecutor.execute { MessagePusher.getMessagePusher(pushType).pushEvent(event).doOnNext { current.decrementAndGet() } }
+            } else {
+              MessagePusher.getMessagePusher(pushType).pushEvent(event)
+              current.decrementAndGet()
+            }
+          }
+        }
+      } else {
+        log.warn("eventDelayQueueMapping[${serviceCode}] return null...")
+        TimeUnit.SECONDS.sleep(1)
+      }
+    }
+    thread.start()
+    threads.add(thread)
   }
 
   /**
    * 创建回调事件消费线程
    */
   private fun createCallbackConsumeThread(serviceCode: String) {
-
+    val thread = Thread {
+      val queue = callbackQueueMapping[serviceCode]
+      if (queue != null) {
+        queue.poll(2, TimeUnit.SECONDS)?.let { pushInfo ->
+          val serviceDetails = pushInfo.serviceDetails
+          val limit = serviceDetails.limit
+          val pushType = serviceDetails.pushType
+          if (limit < 1) {
+            reactiveExecutor.execute {
+              MessagePusher.getMessagePusher(pushType).pushCallback(pushInfo)
+            }
+          } else {
+            //限流值除以event-bus的节点数量就是当前节点的并行推送限制
+            val currentNodeLimit = (limit / busCache.getNodeCount()).coerceAtLeast(1)
+            val current = serverLimits.computeIfAbsent(serviceCode) { AtomicInteger(0) }
+            if (current.incrementAndGet() <= currentNodeLimit) {
+              reactiveExecutor.execute { MessagePusher.getMessagePusher(pushType).pushCallback(pushInfo).doOnNext { current.decrementAndGet() } }
+            } else {
+              //达到限流值则阻塞当前线程进行推送
+              MessagePusher.getMessagePusher(pushType).pushCallback(pushInfo).block()
+              current.decrementAndGet()
+            }
+          }
+        }
+      } else {
+        log.warn("callbackQueueMapping[${serviceCode}] return null...")
+        TimeUnit.SECONDS.sleep(1)
+      }
+    }
+    thread.start()
+    threads.add(thread)
   }
 
   /**
    * 创建延迟回调事件消费线程
    */
   private fun createDelayCallbackConsumeThread(serviceCode: String) {
-
+    val thread = Thread {
+      val queue = callbackDelayQueueMapping[serviceCode]
+      if (queue != null) {
+        queue.poll(2, TimeUnit.SECONDS)?.let { delayPushInfo ->
+          val event = delayPushInfo.info
+          val serviceDetail = event.serviceDetails
+          val limit = serviceDetail.limit
+          val pushType = serviceDetail.pushType
+          if (limit < 1) {
+            reactiveExecutor.execute {
+              MessagePusher.getMessagePusher(pushType).pushCallback(event)
+            }
+          } else {
+            val currentNodeLimit = (limit / busCache.getNodeCount()).coerceAtLeast(1)
+            val current = serverLimits.computeIfAbsent(serviceCode) { AtomicInteger(0) }
+            if (current.incrementAndGet() < currentNodeLimit) {
+              reactiveExecutor.execute {
+                MessagePusher.getMessagePusher(pushType).pushCallback(event).doOnNext { current.decrementAndGet() }
+              }
+            } else {
+              MessagePusher.getMessagePusher(pushType).pushCallback(event).block()
+              current.decrementAndGet()
+            }
+          }
+        }
+      } else {
+        log.warn("callbackDelayQueueMapping[$serviceCode] return null...")
+        TimeUnit.SECONDS.sleep(1)
+      }
+    }
+    thread.start()
+    threads.add(thread)
   }
 
   /**

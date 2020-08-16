@@ -40,6 +40,10 @@ class ServiceDetails {
    */
   var pushType: PushType = PushType.LoadBalance
   /**
+   * 服务端限流
+   */
+  var limit: Int = -1
+  /**
    * 服务订阅信息
    */
   var subscriptions: MutableList<Subscription> = ArrayList()

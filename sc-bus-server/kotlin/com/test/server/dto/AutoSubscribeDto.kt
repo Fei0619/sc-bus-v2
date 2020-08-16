@@ -29,9 +29,12 @@ class AutoSubscribeDto {
   var callbackUrl: String? = null
   /**
    * 推送类型
-   *
    */
   var pushType: String? = null
+  /**
+   * 服务端限流
+   */
+  var limit: Int = -1
 
   /**
    * 订阅信息

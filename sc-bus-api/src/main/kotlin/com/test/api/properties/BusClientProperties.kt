@@ -43,9 +43,12 @@ class BusClientProperties {
   var callbackUrl: String? = null
   /**
    * 推送类型
-   *
    */
   var pushType: PushType = PushType.LoadBalance
+  /**
+   * 服务端限流
+   */
+  var limit: Int = -1
   /**
    * 订阅信息
    */

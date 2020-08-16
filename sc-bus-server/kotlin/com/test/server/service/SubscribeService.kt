@@ -154,6 +154,7 @@ class SubscribeService(private val serviceDetailsRepository: ServiceDetailsRepos
       this.serviceDesc = dto.serviceDesc ?: ""
       this.receiveUrl = dto.receiveUrl!!
       this.callbackUrl = dto.callbackUrl!!
+      this.limit = dto.limit
       try {
         this.pushType = PushType.valueOf(dto.pushType!!)
       } catch (e: Exception) {

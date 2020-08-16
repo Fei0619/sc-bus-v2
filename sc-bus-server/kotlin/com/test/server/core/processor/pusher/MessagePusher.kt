@@ -23,9 +23,8 @@ interface MessagePusher {
       pusherMapping.putIfAbsent(pushType, messagePusher)
     }
 
-    fun getMessagePusher(pushType: PushType): MessagePusher? {
+    fun getMessagePusher(pushType: PushType): MessagePusher {
       return pusherMapping[pushType] ?: throw Error("$pushType -> 对应的MessagePusher不存在")
-
     }
 
   }
