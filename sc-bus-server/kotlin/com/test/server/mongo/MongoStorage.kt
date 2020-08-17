@@ -12,8 +12,7 @@ import reactor.core.publisher.Mono
  * @date 2020/8/14 14:14
  */
 class MongoStorage(private val routingLogRepository: MogoRoutingLogRepository)
-  : RoutingStorage,
-    EventPushLogStorage {
+  : RoutingStorage, EventPushLogStorage {
 
   override fun saveRoutingLogs(routingLogs: List<RoutingLog>): Mono<Unit> {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
