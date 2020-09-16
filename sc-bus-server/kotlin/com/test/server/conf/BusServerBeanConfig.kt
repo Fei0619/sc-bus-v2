@@ -7,6 +7,7 @@ import com.test.server.core.processor.filter.LocalIdempotentMessageFilter
 import com.test.server.core.processor.filter.MessageFilter
 import com.test.server.core.processor.publisher.AsyncPublisher
 import com.test.server.core.processor.publisher.Publisher
+import com.test.server.core.storage.CallbackPushLogStorage
 import com.test.server.core.storage.EventPushLogStorage
 import com.test.server.core.storage.RoutingStorage
 import com.test.server.mongo.MongoStorage
@@ -95,6 +96,11 @@ open class BusServerBeanConfig(private val busClientProperties: BusClientPropert
 
   @Bean
   open fun eventPushLogStorage(mongoStorage: MongoStorage): EventPushLogStorage {
+    return mongoStorage
+  }
+
+  @Bean
+  open fun callbackPushLogStorage(mongoStorage: MongoStorage): CallbackPushLogStorage {
     return mongoStorage
   }
 

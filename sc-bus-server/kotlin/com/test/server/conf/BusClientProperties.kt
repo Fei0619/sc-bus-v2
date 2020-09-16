@@ -15,22 +15,30 @@ class BusClientProperties {
   /**
    * 建立连接超时时间
    */
-  var webClientConnectTimeout = Duration.ofMillis(200)!!
+  val webClientConnectTimeout = Duration.ofMillis(200)!!
   /**
    * 写入超时时间
    */
-  var webClientWriteTimeout = Duration.ofMillis(400)!!
+  val webClientWriteTimeout = Duration.ofMillis(400)!!
   /**
    * 读取超时时间
    */
-  var webClientReadTimeout = Duration.ofMillis(400)!!
+  val webClientReadTimeout = Duration.ofMillis(400)!!
   /**
    * 幂等过期时间 - 单位:秒
    */
-  var idempotentExpireTime = 60L
+  val idempotentExpireTime = 60L
   /**
    * 默认的失败重试次数
    */
-  var retryLimit = 2
+  val retryLimit = 2
+  /**
+   * 失败重试时间间隔
+   */
+  val retryAwaitSecond: Int = 5
+  /**
+   * 失败重试时间步长
+   */
+  val retryTimeStep: Int = 2
 
 }

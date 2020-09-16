@@ -30,7 +30,7 @@ class Res<T> private constructor() {
   @JsonInclude(value = JsonInclude.Include.NON_NULL)
   private var data: T? = null
   /** 是否成功 */
-  private var success: Boolean? = null
+  private var success: Boolean = true
 
   //--------------------------------------- 自定义参数 ----------------------------------------------//
 
@@ -64,6 +64,14 @@ class Res<T> private constructor() {
       return Res(CommonResMsg.SUCCESS.code(), message, data, false)
     }
 
+  }
+
+  fun isSuccess(): Boolean {
+    return success
+  }
+
+  fun isFaliure(): Boolean {
+    return !success
   }
 
 }

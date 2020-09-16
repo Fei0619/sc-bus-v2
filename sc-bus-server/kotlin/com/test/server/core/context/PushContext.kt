@@ -20,7 +20,7 @@ class PushContext<T>(
   /**
    * 是否成功将消息送达消费方
    */
-  var deliverd: Boolean = true
+  var delivered: Boolean = true
   /**
    * 推送类型
    */

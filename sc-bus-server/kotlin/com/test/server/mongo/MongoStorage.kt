@@ -1,5 +1,7 @@
 package com.test.server.mongo
 
+import com.test.server.core.pojo.CallbackPushInfo
+import com.test.server.core.storage.CallbackPushLogStorage
 import com.test.server.core.storage.EventPushLogStorage
 import com.test.server.core.storage.RoutingStorage
 import com.test.server.mongo.repository.MogoRoutingLogRepository
@@ -12,13 +14,17 @@ import reactor.core.publisher.Mono
  * @date 2020/8/14 14:14
  */
 class MongoStorage(private val routingLogRepository: MogoRoutingLogRepository)
-  : RoutingStorage, EventPushLogStorage {
+  : RoutingStorage, EventPushLogStorage, CallbackPushLogStorage {
 
   override fun saveRoutingLogs(routingLogs: List<RoutingLog>): Mono<Unit> {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
   override fun saveEventPushLog(eventPushLog: EventPushLog): Mono<Unit> {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  }
+
+  override fun saveCallbackPushLog(callbackPushInfo: CallbackPushInfo): Mono<Unit> {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 }

@@ -150,7 +150,7 @@ abstract class WebClientPusher(private val pushResponseHandler: PushResponseHand
       Res.error(httpPushResponse.body)
     }
     return PushContext(pushInfo, responseBody).also {
-      it.deliverd = httpPushResponse.isSuccess()
+      it.delivered = httpPushResponse.isSuccess()
       it.pushType = pushType
       it.pushTimestamp = httpPushResponse.pushTimestamp
       it.responseHeaders = httpPushResponse.headers
